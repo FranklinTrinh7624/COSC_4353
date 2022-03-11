@@ -3,9 +3,18 @@ import { StyleSheet, Text, View, TextInput } from "react-native";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
 
 export default function App() {
   const [date, setDate] = useState(new Date());
+
+  function submit(e){
+    e.preventDefault();
+    axios.post('/data/fuelquote',{
+      date})
+    //}).then((response)=>{console.log(response)})
+    }
+
   return (
     <div className="App">
       <h1>Fuel Quote Form</h1>
@@ -44,6 +53,10 @@ export default function App() {
         {"\n"}
         {"\n"}
       </Text>
+
+      <button type="submit" id="save" onClick={submit}>
+            Save
+          </button>
     </div>
   );
 }

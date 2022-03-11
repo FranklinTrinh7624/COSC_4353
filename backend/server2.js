@@ -1,4 +1,3 @@
-console.log('hello')
 const express = require('express');
 const app = express()
 const path = require('path');
@@ -70,12 +69,10 @@ app.get('/data/FuelQuoteHistory', (req,res)=>{
     ]);
 })
 
-app.get('/data/FuelQuoteGet', (req,res)=>{
-  res.send([
-
-  ]);
-})
   
-app.listen(3000,()=>{
-  console.log('serving port 3000');
-});
+// app.listen(3000,()=>{
+//   console.log('serving port 3000');
+// });
+
+let server = app.listen(3000);
+module.exports = server;

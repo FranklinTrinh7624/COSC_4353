@@ -1,14 +1,26 @@
 import React, { useState } from "react";
 import "./LoginRegistration.css";
+import axios from "axios";
 
 function LoginRegistration() {
   const [userRegister, setUserRegister] = useState("");
   const [passwordRegister, setPasswordRegister] = useState("");
+  const [logUser, setLogUser] = useState("");
+  const [logPassword, setLogPassword] = useState("");
 
-  function handleRegister(e) { /*to be modified?*/
-      e.preventDefault();
-      console.log('You Registered! ' + userRegister + ' ' + passwordRegister);
-  }
+  function submitRegistration(e){
+    e.preventDefault();
+    axios.post('/data/registration',{
+      userRegister, passwordRegister})
+    //}).then((response)=>{console.log(response)})
+    }
+
+  function submitLogin(e){
+    e.preventDefault();
+    axios.post('/data/login',{
+      logUser, logPassword})
+    //}).then((response)=>{console.log(response)})
+    }
   return (
     <div>
       <h1>Login/Registration</h1>
@@ -16,16 +28,16 @@ function LoginRegistration() {
         <form className="login">
           <label>Login</label>
           <div className="logUsername">
-            <input type="text" placeholder="Username here" />
+            <input type="text" placeholder="Username here" onChange={(e)=>{setLogUser(e.target.value)}}/>
           </div>
 
           <div className="logPassword">
-            <input type="password" placeholder="Password here" />
+            <input type="password" placeholder="Password here" onChange={(e)=>{setLogPassword(e.target.value)}}/>
           </div>
-          <button> Login </button>
+          <button className="submit" type="submit" onClick={submitLogin}> Login </button>
         </form>
 
-        <form className="register" onSubmit={handleRegister}>
+        <form className="register">
           <label> Registration </label>
           <div className="regiUser">
             <input type="text" id="user" placeholder="Create Username" 
@@ -36,7 +48,7 @@ function LoginRegistration() {
             <input type="password" id="pw" placeholder="Create Password" 
             onChange={(e)=> {setPasswordRegister(e.target.value)}} required/>
           </div>
-          <button className="submit" type="submit"> Register </button>
+          <button className="submit" type="submit" onClick={submitRegistration}> Register </button>
         </form>
       </div>
     </div>

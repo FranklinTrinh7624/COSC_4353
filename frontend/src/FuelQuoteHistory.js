@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import "./FuelQuoteHistory.css";
-import data from "./QuoteHistory.json";
+//import data from "./QuoteHistory.json";
+import axios from "axios";
 
 function FuelQuoteHistory() {
-  const [history, setHistory] = useState(data);
-
+  const [history, setHistory] = useState([]);
+  
+  useMemo(()=>{
+    axios.get('/data/FuelQuoteHistory').then((response)=>{
+      setHistory(response.data)
+      console.log(response)
+    })
+  },[])
+  
   return (
     <div className="FuelQuoteHisotry">
       <table>

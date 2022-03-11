@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ClientProfile.css";
+import axios from "axios";
 function Profile() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -9,11 +10,24 @@ function Profile() {
   const [state, setStates] = useState("");
   const [zipcode, setZipcode] = useState("");
 
+  function submit(e) {
+    e.preventDefault();
+    axios.post("/data/clientprofile", {
+      firstName,
+      lastName,
+      address1,
+      address2,
+      city,
+      state,
+      zipcode,
+    });
+  }
+
   return (
     <div className="clientProfile">
       <div className="form-wrapper">
         <h1>Client Profile Form</h1>
-        <form onsum>
+        <form>
           <div className="firstName">
             <label>First Name: </label>
             <input
@@ -148,7 +162,7 @@ function Profile() {
               onChange={(e) => setZipcode(e.target.value)}
             ></input>
           </div>
-          <button type="submit" id="save">
+          <button type="submit" id="save" onClick={submit}>
             Save
           </button>
         </form>
