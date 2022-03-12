@@ -1,65 +1,108 @@
 import "./FuelQuote.css";
 import { StyleSheet, Text, View, TextInput } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 
 export default function App() {
   const [date, setDate] = useState(new Date());
+  const [gallonsRequeseted, setGallonsRequested] = useState("");
+  //const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [getStuff, setGetStuff] = useState([]);
 
   function submit(e){
     e.preventDefault();
     axios.post('/data/fuelquote',{
-      date})
+      gallonsRequeseted, date})
     //}).then((response)=>{console.log(response)})
     }
 
-  return (
-    <div className="App">
-      <h1>Fuel Quote Form</h1>
+  useMemo(()=>{
+    axios.get('/data/FuelQuoteGet').then((response)=>{
+      setGetStuff(response.data)
+      console.log(response)
+    })
+  },[])
 
-      <Text>Gallons Requested:</Text>
-      <input
-        onKeyPress={(event) => {
-          if (!/[0-9]/.test(event.key)) {
-            event.preventDefault();
-          }
-        }}
-        placeholder="e.g 18"
-      />
-      <Text>
-        {"\n"}
-        {"\n"}
-        {"\n"}
-        Delivery Address: 15314 Riverside Dr.
-        {"\n"}
-        {"\n"}
-        {"\n"}
-      </Text>
-      <DatePicker selected={date} onChange={(date) => setDate(date)} />
-      <Text>
-        {"\n"}
-        {"\n"}
-        {"\n"}
-        Suggested Price: $29
-      </Text>
-      <Text>
-        {"\n"}
-        {"\n"}
-        {"\n"}
-        Total amount due: $30
-        {"\n"}
-        {"\n"}
-        {"\n"}
-      </Text>
+    return (
+      <div className="fuelQuote">
+        <div className="form-wrapper">
+          <h1>Fuel Quote Form</h1>
+  
+          <div className="gallonsRequested">
+            <label>Gallons Requseted: </label>
+            <input
+              type="number"
+              id="gallons-requested"
+              name="gallonsrequested"
+              maxLength={100}
+              required
+              onChange={(e) => setGallonsRequested(e.target.value)}
+            ></input>
+          </div>
 
-      <button type="submit" id="save" onClick={submit}>
+          <Text>
+          {"\n"}
+          {"\n"}
+          {"\n"}
+          </Text>
+
+          <div className="deliveryAddress">
+          <label>Delivery Address: </label>
+          {getStuff.map((getStuffSet)=>(
+            <text>{getStuffSet.Address}</text>
+          ))}
+          </div>
+          
+          <Text>
+          {"\n"}
+          {"\n"}
+          {"\n"}
+          </Text>
+
+          <DatePicker selected={date} onChange={(date) => setDate(date)} />
+
+          <Text>
+          {"\n"}
+          {"\n"}
+          {"\n"}
+          </Text>
+
+          <div className="gallonPrice">
+          <label>Price Per Gallon: </label>
+          {getStuff.map((getStuffSet)=>(
+            <text>{getStuffSet.PricePerGallon}</text>
+          ))}
+          </div>
+
+          <Text>
+          {"\n"}
+          {"\n"}
+          {"\n"}
+          </Text>
+
+          <div className="totalPrice">
+          <label>Total Price: </label>
+          {getStuff.map((getStuffSet)=>(
+            <text>{getStuffSet.TotalPrice}</text>
+          ))}
+          </div>
+
+          <Text>
+          {"\n"}
+          {"\n"}
+          {"\n"}
+          </Text>
+          
+          <button type="submit" id="save" onClick={submit}>
             Save
           </button>
-    </div>
-  );
+        </div>
+      </div>
+    );
 }
+
 
 const styles = StyleSheet.create({
   input: {

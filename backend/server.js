@@ -2,8 +2,8 @@ console.log('hello')
 const express = require('express');
 const app = express()
 const path = require('path');
-const bodyparser = require('body-parser');
-const jsonparser = bodyparser.json();
+//const bodyparser = require('body-parser');
+//const jsonparser = bodyparser.json();
 //import data from "./QuoteHistoryBackend.json"
 
 app.use(express.static(path.join(__dirname, '..','frontend','build')));
@@ -69,13 +69,18 @@ app.get('/data/FuelQuoteHistory', (req,res)=>{
       }
     ]);
 })
-
+  
 app.get('/data/FuelQuoteGet', (req,res)=>{
   res.send([
-
+    {
+      "id": 1,
+      "Address": "15314 Riverside Grove Dr.",
+      "PricePerGallon": "48",
+      "TotalPrice": "60"
+    }
   ]);
 })
-  
+
 app.listen(3000,()=>{
   console.log('serving port 3000');
 });
