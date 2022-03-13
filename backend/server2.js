@@ -3,8 +3,10 @@ const app = express()
 const path = require('path');
 const bodyparser = require('body-parser');
 const userRoute = require("./routes/userRoutes");
-const jsonparser = bodyparser.json();
+const fuelRoute = require("./routes/fuelRoute");
+//const jsonparser = bodyparser.json();
 //import data from "./QuoteHistoryBackend.json"
+//FOR UNIT TESTING PURPOSES
 
 app.use(express.static(path.join(__dirname, '..','frontend','build')));
 app.use(express.json()); //should be similar to app.use(bodyParser.json())
@@ -14,11 +16,14 @@ app.use(express.urlencoded({
 
 
 app.get('/', function (req, res) {
- //   res.sendFile(path.join(__dirname, 'build', 'index.js'));
-    res.redirect('index.html')
-  }); 
+    //   res.sendFile(path.join(__dirname, 'build', 'index.js'));
+       res.redirect('index.html')
+});
+
+
 
 app.use("/data/login", userRoute);
+app.use("/data/fuelquote", fuelRoute);
 
 // app.post('/data/clientprofile',(req,res)=>{
 //     req.accepts('application/json');
@@ -77,5 +82,5 @@ app.use("/data/login", userRoute);
 //   console.log('serving port 3000');
 // });
 
-let server = app.listen(3000);
-module.exports = server;
+
+module.exports = app;

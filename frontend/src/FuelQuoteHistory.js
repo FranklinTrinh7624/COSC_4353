@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from "react";
 import "./FuelQuoteHistory.css";
-//import data from "./QuoteHistory.json";
 import axios from "axios";
 
 function FuelQuoteHistory() {

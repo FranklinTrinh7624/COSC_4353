@@ -12,14 +12,12 @@ function LoginRegistration() {
     e.preventDefault();
     axios.post('/data/registration',{
       userRegister, passwordRegister})
-    //}).then((response)=>{console.log(response)})
     }
 
   function submitLogin(e){
     e.preventDefault();
     axios.post('/data/login',{
       logUser, logPassword})
-    //}).then((response)=>{console.log(response)})
     }
   return (
     <div>

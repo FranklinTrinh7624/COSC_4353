@@ -2,9 +2,6 @@ console.log('hello')
 const express = require('express');
 const app = express()
 const path = require('path');
-//const bodyparser = require('body-parser');
-//const jsonparser = bodyparser.json();
-//import data from "./QuoteHistoryBackend.json"
 
 app.use(express.static(path.join(__dirname, '..','frontend','build')));
 app.use(express.json());
@@ -14,7 +11,6 @@ app.use(express.urlencoded({
 
 
 app.get('/', function (req, res) {
- //   res.sendFile(path.join(__dirname, 'build', 'index.js'));
     res.redirect('index.html')
   }); 
 

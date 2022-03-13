@@ -8,14 +8,12 @@ import axios from "axios";
 export default function App() {
   const [date, setDate] = useState(new Date());
   const [gallonsRequeseted, setGallonsRequested] = useState("");
-  //const [deliveryAddress, setDeliveryAddress] = useState("");
   const [getStuff, setGetStuff] = useState([]);
 
   function submit(e){
     e.preventDefault();
     axios.post('/data/fuelquote',{
       gallonsRequeseted, date})
-    //}).then((response)=>{console.log(response)})
     }
 
   useMemo(()=>{
