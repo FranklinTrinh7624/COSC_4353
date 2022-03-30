@@ -2,6 +2,8 @@ console.log('hello')
 const express = require('express');
 const app = express()
 const path = require('path');
+const mongoose = require('mongoose');
+const UserSchema = require('./models/userSchema');
 
 app.use(express.static(path.join(__dirname, '..','frontend','build')));
 app.use(express.json());
@@ -77,6 +79,27 @@ app.get('/data/FuelQuoteGet', (req,res)=>{
   ]);
 })
 
-app.listen(3000,()=>{
-  console.log('serving port 3000');
-});
+mongoose.connect("mongodb+srv://sakibz:sakibzafar123@cluster0.gslom.mongodb.net/FuelApplication?retryWrites=true&w=majority", {useNewUrlParser: true})
+  .then(() => {
+    app.listen(3000, () => {
+      console.log('serving port 3000');
+    })
+  })
+  .catch((err)=> {
+    console.log(err);
+  });
+
+app.get('/add-userSchema', (req, res)=>{
+  const userSchema = new UserSchema({
+    username:'sakibzafar',
+    password:'diabound798'
+  });
+
+  userSchema.save()
+    .then((result)=>{
+      res.send(result)
+    })
+    .catch((e)=>{
+      console.log(err);
+    });
+})

@@ -60,7 +60,7 @@ const getID = (req, res)=>{
     res.status(404).json({errors:errors.array()});
 }
 
-const login = (req,res)=> {
+const login = async (req,res)=> {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         res.status(422).json({errors: errors.array() });
