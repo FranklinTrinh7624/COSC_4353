@@ -11,13 +11,20 @@ function LoginRegistration() {
   function submitRegistration(e){
     e.preventDefault();
     axios.post('/data/registration',{
-      userRegister, passwordRegister})
+      userRegister, passwordRegister,})
+      .then((response)=>{
+        console.log(response);
+      });
+
     }
 
   function submitLogin(e){
     e.preventDefault();
     axios.post('/data/login',{
       logUser, logPassword})
+      .then((response)=>{
+        console.log(response);
+      });
     }
   return (
     <div>
@@ -38,12 +45,12 @@ function LoginRegistration() {
         <form className="register">
           <label> Registration </label>
           <div className="regiUser">
-            <input type="text" id="user" placeholder="Create Username" 
+            <input type="text" id="user" name="userReg"placeholder="Create Username" 
             onChange={(e)=> {setUserRegister(e.target.value)}} required/>
           </div>
 
           <div className="regiPass">
-            <input type="password" id="pw" placeholder="Create Password" 
+            <input type="password" id="pw" name="passReg"placeholder="Create Password" 
             onChange={(e)=> {setPasswordRegister(e.target.value)}} required/>
           </div>
           <button className="submit" type="submit" onClick={submitRegistration}> Register </button>

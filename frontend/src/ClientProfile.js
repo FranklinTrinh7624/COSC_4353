@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ClientProfile.css";
+import LoginRegistration, { logUser } from "./LoginRegistration";
 import axios from "axios";
 function Profile() {
   const [firstName, setFirstName] = useState("");
@@ -10,9 +11,13 @@ function Profile() {
   const [state, setStates] = useState("");
   const [zipcode, setZipcode] = useState("");
 
+  const [updateProfile, setUpdateProfile] = useState("");
+  const [profileList, setProfileList] = useState([]);
+
   function submit(e) {
     e.preventDefault();
     axios.post("/data/clientprofile", {
+      //username: logUser,
       firstName,
       lastName,
       address1,
@@ -20,7 +25,17 @@ function Profile() {
       city,
       state,
       zipcode,
+    })
+    .then((response)=>{
+      console.log(response);
     });
+  }
+
+  function getProfile(e) {
+    e.preventDefault();
+    axios.get("/data/clientprofile").then((response) => {
+      setProfileList(response.data);
+    })
   }
 
   return (
