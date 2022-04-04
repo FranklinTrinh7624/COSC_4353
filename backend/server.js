@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const UserSchema = require('./models/userSchema');
 const profileSchema = require('./models/userInfoSchema');
 const QuoteSchema = require('./models/quoteSchema');
+const { restart } = require('nodemon');
 
 app.use(express.static(path.join(__dirname, '..','frontend','build')));
 app.use(cors());
@@ -43,30 +44,6 @@ app.post('/data/registration', (req,res)=> {
       console.log(err);
     })
   }) 
-  //console.log(req.body.userRegister + req.body.passwordRegister);
-  // const freshAcc = new UserSchema({
-  //   username: username,
-  //   password: password
-  // });
-  // const newProfile = new profileSchema({
-  //   username: username,
-  //   firstname: "first",
-  //   lastname: "last",
-  //   address1: "addressone",
-  //   address2: "addresstwo",
-  //   city: "mycity",
-  //   state: "N/A",
-  //   zipcode: "00000"
-  // })
-  
-
-  // newProfile.save()
-  // .then((result)=> {
-  //   console.log(result);
-  // })
-  // .catch((err)=>{
-  //   console.log(err);
-  // })
 
 })
 
@@ -86,25 +63,15 @@ app.post('/data/login', async (req,res)=> { //very basic, needs more functionali
       console.log("LOGGED IN");
     }
   });
-  // UserSchema.findOne({username: username, password:password})
-  // .then((result)=> {
-  //   if(result) {
-  //     console.log(result);
-  //     console.log("logged in");
-  //   }
-  //   else { console.log("fail login");}
-  // })
-  // .catch((err)=>{
-  //   console.log(err);
-  // })
+
 })
 
-app.get("/data/clientprofile",(req,res)=> {
+/*app.get("/data/clientprofile",(req,res)=> {
   
-})
+})*/
 
 app.post("/data/clientprofile", (req,res)=> {
-  //const username = req.body.username;
+  const username = req.body.username;
   const firstname = req.body.firstName;
   const lastname = req.body.lastName;
   const address1 = req.body.address1;
@@ -114,7 +81,7 @@ app.post("/data/clientprofile", (req,res)=> {
   const zipcode = req.body.zipcode;
 
   const profileForm = new profileSchema({
-    username:"franklin123",
+    username: username,
     firstname: firstname,
     lastname: lastname,
     address1: address1,
@@ -134,16 +101,20 @@ app.post("/data/clientprofile", (req,res)=> {
 })
 
 app.post('/data/fuelquote', (req,res)=>{
+  const username = req.body.username;
   const date = req.body.date;
-  const gallons = req.body.gallonsRequeseted;
+  const gallons = req.body.gallons;
+  const pricePerGallon = req.body.pricePerGallon;
+  const address = req.body.address;
   const fuelform = new QuoteSchema({
-    username: "franklin123",
-    date: date,
+    username: username,
+    date: date, //look up javascript date formating
     gallons: gallons,
-    address: "15314 Riverside Dr.",
-    pricePerGallon: 65,
+    address: address,
+    pricePerGallon: 65, 
     totalPrice: 89
   });
+  console.log(fuelform);
   fuelform.save()
     .then((result)=> {
       console.log(result);
@@ -151,10 +122,14 @@ app.post('/data/fuelquote', (req,res)=>{
     .catch((err)=>{
       console.log(err);
     })
+    res.status(200).send(":D");
 })
 
-app.get('/fuelquote/:id', (req,res)=>{
-  
+app.get('/fuelquote/:username', async(req,res)=>{
+  const quote = await QuoteSchema.find({
+    username: req.params.username
+  })
+  res.send(quote);
 })
 
 mongoose.connect("mongodb+srv://sakibz:sakibzafar123@cluster0.gslom.mongodb.net/FuelApplication?retryWrites=true&w=majority", {useNewUrlParser: true})
@@ -167,98 +142,3 @@ mongoose.connect("mongodb+srv://sakibz:sakibzafar123@cluster0.gslom.mongodb.net/
     console.log(err);
   });
 
-  // app.post('/data/clientprofile',(req,res)=>{
-//     req.accepts('application/json');
-//     console.log('post /data/clientprofile');
-//     console.log(req.body);
-//     res.sendStatus(200);
-// })
-
-// app.post('/data/registration',(req,res)=>{
-//   req.accepts('application/json');
-//   console.log('post /data/registration');
-//   console.log(req.body);
-//   res.sendStatus(200);
-// })
-
-// app.post('/data/login',(req,res)=>{
-//   req.accepts('application/json');
-//   console.log('post /data/login');
-//   console.log(req.body);
-//   res.sendStatus(200);
-// })
-
-// app.post('/data/fuelquote',(req,res)=>{
-//   req.accepts('application/json');
-//   console.log('post /data/fuelquote');
-//   console.log(req.body);
-//   res.sendStatus(200);
-// })
-
-// app.get('/data/FuelQuoteHistory', (req,res)=>{
-//     res.send([
-//       {
-//         "id": 1,
-//         "Date": "12/13/16",
-//         "GallonsRequested": "50",
-//         "DeliveryAddress": "1464 Flemming Dr",
-//         "DeliveryDate": "12/15/16",
-//         "SuggestedPrice": "60",
-//         "TotalAmountDue": "61"
-//       },
-    
-//       {
-//         "id": 2,
-//         "Date": "1/16/20",
-//         "GallonsRequested": "22",
-//         "DeliveryAddress": "1513 River Dr",
-//         "DeliveryDate": "1/20/20",
-//         "SuggestedPrice": "88",
-//         "TotalAmountDue": "91"
-//       }
-//     ]);
-// })
-  
-// app.get('/data/FuelQuoteGet', (req,res)=>{
-//   res.send([
-//     {
-//       "id": 1,
-//       "Address": "15314 Riverside Grove Dr.",
-//       "PricePerGallon": "48",
-//       "TotalPrice": "60"
-//     }
-//   ]);
-// })
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-// app.get('/add-userSchema', (req, res)=>{
-//   const userSchema = new UserSchema({
-//     username:'sakibzafar',
-//     password:'diabound798'
-//   });
-
-//   userSchema.save()
-//     .then((result)=>{
-//       res.send(result);
-//     })
-//     .catch((e)=>{
-//       console.log(err);
-//     });
-// })
-
-// app.get('/all-userSchema',(req, res)=>{
-//   UserSchema.find()
-//     .then((result)=>{
-//       res.send(result);
-//     })
-//     .catch((e)=>{
-//       console.log(err);
-//     })
-// })

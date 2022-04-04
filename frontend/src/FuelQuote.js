@@ -13,15 +13,15 @@ export default function App() {
   function submit(e){
     e.preventDefault();
     axios.post('/data/fuelquote',{
-      gallonsRequeseted, date})
+      gallons:gallonsRequeseted, date:date})
     }
 
   useMemo(()=>{
-    axios.get('/data/FuelQuoteGet').then((response)=>{
+    axios.get('/fuelquote/franklin123').then((response)=>{ //create username variable and append to the end of fuelquote
       setGetStuff(response.data)
       console.log(response)
     })
-  },[])
+  },[])//look at the date to see which is greater for most accurate results
 
     return (
       <div className="fuelQuote">
@@ -43,13 +43,13 @@ export default function App() {
           <Text>
           {"\n"}
           {"\n"}
-          {"\n"}
+          {"\n"} 
           </Text>
 
-          <div className="deliveryAddress">
+          <div className="deliveryAddress"> 
           <label>Delivery Address: </label>
           {getStuff.map((getStuffSet)=>(
-            <text>{getStuffSet.Address}</text>
+            <text>{getStuffSet.address}</text>
           ))}
           </div>
           
@@ -70,7 +70,7 @@ export default function App() {
           <div className="gallonPrice">
           <label>Price Per Gallon: </label>
           {getStuff.map((getStuffSet)=>(
-            <text>{getStuffSet.PricePerGallon}</text>
+            <text>{getStuffSet.pricePerGallon}</text>
           ))}
           </div>
 
@@ -83,7 +83,7 @@ export default function App() {
           <div className="totalPrice">
           <label>Total Price: </label>
           {getStuff.map((getStuffSet)=>(
-            <text>{getStuffSet.TotalPrice}</text>
+            <text>{getStuffSet.totalPrice}</text>
           ))}
           </div>
 

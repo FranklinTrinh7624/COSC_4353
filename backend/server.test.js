@@ -18,8 +18,8 @@ describe("testing /loginn", () => {
     describe("valid login", () => {
         it("should respond with 200", async () => {
             const response= await request(server2).post("/data/login/loginn").send({
-                userName: "testuser",
-                passWord: "testpass"
+                userName: "fakeuser",
+                passWord: "password"
             })
             expect(response.statusCode).toBe(200)
         })
@@ -37,8 +37,8 @@ describe("testing /loginn", () => {
 
 describe("testing /profile", ()=> {
     it("should respond with 200", async()=> {
-        const response = await request(server2).post("/data/login/1/fillprofile").send({
-            idd: "1",
+        const response = await request(server2).post("/data/login/fakeuser/fillprofile").send({
+            userName: "fakeuser",
             firstn:"proffirst",
             lastn:"proflast",
             addrr1:"1111 prof st",
@@ -52,8 +52,8 @@ describe("testing /profile", ()=> {
 
     describe("first name > 25", () => {
         it("should respond with 400", async()=>{
-            const response = await request(server2).post("/data/login/1/fillprofile").send({
-                idd: "1",
+            const response = await request(server2).post("/data/login/fakeuser/fillprofile").send({
+                userName: "fakeuser",
                 firstn:"proffirstaaaaaaaaaaaaaaaaa",
                 lastn:"proflast",
                 addrr1:"1111 prof st",
@@ -67,8 +67,8 @@ describe("testing /profile", ()=> {
     })
     describe("last name > 25", () => {
         it("should respond with 400", async()=>{
-            const response = await request(server2).post("/data/login/1/fillprofile").send({
-                idd: "1",
+            const response = await request(server2).post("/data/login/fakeuser/fillprofile").send({
+                userName: "fakeuser",
                 firstn:"proffirst",
                 lastn:"proflastaaaaaaaaaaaaaaaaaaaa",
                 addrr1:"1111 prof st",
@@ -82,8 +82,8 @@ describe("testing /profile", ()=> {
     })
     describe("addr1 > 100", () => {
         it("should respond with 400", async()=>{
-            const response = await request(server2).post("/data/login/1/fillprofile").send({
-                idd: "1",
+            const response = await request(server2).post("/data/login/fakeuser/fillprofile").send({
+                userName: "fakeuser",
                 firstn:"proffirst",
                 lastn:"proflast",
                 addrr1:"1111 prof st 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
@@ -97,8 +97,8 @@ describe("testing /profile", ()=> {
     })
     describe("addr2 > 100", () => {
         it("should respond with 400", async()=>{
-            const response = await request(server2).post("/data/login/1/fillprofile").send({
-                idd: "1",
+            const response = await request(server2).post("/data/login/fakeuser/fillprofile").send({
+                userName: "fakeuser",
                 firstn:"proffirst",
                 lastn:"proflast",
                 addrr1:"1111 prof st",
@@ -112,8 +112,8 @@ describe("testing /profile", ()=> {
     })
     describe("city > 100", () => {
         it("should respond with 400", async()=>{
-            const response = await request(server2).post("/data/login/1/fillprofile").send({
-                idd: "1",
+            const response = await request(server2).post("/data/login/fakeuser/fillprofile").send({
+                userName: "fakeuser",
                 firstn:"proffirst",
                 lastn:"proflast",
                 addrr1:"1111 prof st",
@@ -127,8 +127,8 @@ describe("testing /profile", ()=> {
     })
     describe("zipcode > 9", () => {
         it("should respond with 400", async()=>{
-            const response = await request(server2).post("/data/login/1/fillprofile").send({
-                idd: "1",
+            const response = await request(server2).post("/data/login/fakeuser/fillprofile").send({
+                userName: "fakeuser",
                 firstn:"proffirst",
                 lastn:"proflast",
                 addrr1:"1111 prof st",
@@ -145,12 +145,12 @@ describe("testing /profile", ()=> {
 describe("testing /fuelquote", ()=> {
     it("should respond with 201", async()=> {
         const response = await request(server2).post("/data/fuelquote/fuelquoteform").send({
-            id: 2,
-            gallon: "15",
-            delvAddress: "2222 delivery st",
-            date:"2022-07-19T02:07:48.000Z",
-            pricePerGallon:"11",
-            totalPrice:"165"
+            userName: "fakeuser",
+            galloN: 15,
+            delvAddresS: "2222 delivery st",
+            datE:"2022-07-19",
+            pricePerGalloN:11,
+            totalPricE:165
         })
         expect(response.statusCode).toBe(201)
     })

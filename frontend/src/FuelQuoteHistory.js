@@ -6,12 +6,12 @@ function FuelQuoteHistory() {
   const [history, setHistory] = useState([]);
   
   useMemo(()=>{
-    axios.get('/data/FuelQuoteHistory').then((response)=>{
+    axios.get('/fuelquote/franklin123').then((response)=>{
       setHistory(response.data)
       console.log(response)
     })
   },[])
-  
+  //change to schema stuff
   return (
     <div className="FuelQuoteHisotry">
       <table>
@@ -20,7 +20,7 @@ function FuelQuoteHistory() {
             <th>Date</th>
             <th>Gallons Requested</th>
             <th>Delivery Address</th>
-            <th>Delivery Date</th>
+            
             <th>Suggested Price</th>
             <th>Total Amount Due</th>
           </tr>
@@ -28,12 +28,12 @@ function FuelQuoteHistory() {
         <tbody>
           {history.map((historySet) => (
             <tr>
-              <td>{historySet.Date}</td>
-              <td>{historySet.GallonsRequested}</td>
-              <td>{historySet.DeliveryAddress}</td>
-              <td>{historySet.DeliveryDate}</td>
-              <td>{historySet.SuggestedPrice}</td>
-              <td>{historySet.TotalAmountDue}</td>
+              <td>{historySet.date}</td> 
+              <td>{historySet.gallons}</td>
+              <td>{historySet.address}</td>
+              
+              <td>{historySet.pricePerGallon}</td>
+              <td>{historySet.totalPrice}</td>
             </tr>
           ))}
         </tbody>

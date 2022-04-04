@@ -9,8 +9,8 @@ router.post("/register", userControl.validate("createUser"), userControl.registr
 
 router.post("/loginn", userControl.validate("loginUser"), userControl.login);
 
-router.get("/:idd/profile", userControl.getID);
+router.get("/:userName/profile", userControl.getID);
 
-router.post("/:idd/fillprofile", userControl.validate("fillProfile"),userControl.fillProfileForm);
+router.post("/:userName/fillprofile", userControl.validate("fillProfile"),userControl.fillProfileForm);
 
 module.exports = router;

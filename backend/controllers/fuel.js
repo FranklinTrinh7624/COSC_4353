@@ -1,4 +1,5 @@
 const {validationResult, check} = require("express-validator");
+const QuoteSchema = require('../models/quoteSchema');
 
 //https://www.freecodecamp.org/news/how-to-make-input-validation-simple-and-clean-in-your-express-js-app-ea9b5ff5a8a7/
 
@@ -22,13 +23,26 @@ const fuelQuote = (req,res) => {
         return;
     }
 
-    const {iD, galloN, delvAddresS, datE, pricePerGalloN, totalPricE} = req.body;
-
+    const {userName, galloN, delvAddresS, datE, pricePerGalloN, totalPricE} = req.body;
+    try {
+        const newFuelQuote = new QuoteSchema({
+            username: userName,
+            date: datE,
+            gallons: galloN,
+            address: delvAddresS,
+            pricePerGallon: pricePerGalloN,
+            totalPrice: totalPricE
+        });
+        newFuelQuote.save();
+    } catch(err) {
+        res.status(422).json({errors: errors.array() });
+        return;
+    }
     //const checkFuel = {iD, galloN, delvAddresS, datE, pricePerGalloN, totalPricE};
 
-    const fuelFormInfo = {id:2, gallon: galloN, delvAddress: delvAddresS, date: datE, pricePerGallon: pricePerGalloN, totalPrice:totalPricE}
+    //const fuelFormInfo = {id:2, gallon: galloN, delvAddress: delvAddresS, date: datE, pricePerGallon: pricePerGalloN, totalPrice:totalPricE}
 
-    testFuelQuote.push(fuelFormInfo);
+    //testFuelQuote.push(fuelFormInfo);
     res.status(201).json({message:"All inputs filled"});
 };
 

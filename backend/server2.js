@@ -1,9 +1,10 @@
 const express = require('express');
-const app = express()
+const app = express();
 const path = require('path');
 const bodyparser = require('body-parser');
 const userRoute = require("./routes/userRoutes");
 const fuelRoute = require("./routes/fuelRoute");
+const mongoose = require('mongoose');
 //const jsonparser = bodyparser.json();
 //import data from "./QuoteHistoryBackend.json"
 //FOR UNIT TESTING PURPOSES
@@ -81,6 +82,12 @@ app.use("/data/fuelquote", fuelRoute);
 // app.listen(3000,()=>{
 //   console.log('serving port 3000');
 // });
-
+mongoose.connect("mongodb+srv://DeadFallen:<password></password>@cluster0.legd1.mongodb.net/FuelApplication?retryWrites=true&w=majority")
+.then(()=> {
+    let server = app.listen(3001);
+    module.exports = server;
+}) .catch ((err)=>{
+    console.log(err);
+});
 
 module.exports = app;
