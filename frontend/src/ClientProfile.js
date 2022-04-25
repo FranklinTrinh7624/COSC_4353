@@ -16,6 +16,7 @@ function Profile() {
 
   function submit(e) {
     e.preventDefault();
+    //const data = {firstname: firstName, lastname: lastName, address1: address1, address2: address2, city:city, state: state, zipcode: zipcode};
     axios.post("/data/clientprofile", {
       //username: logUser,
       firstName,
@@ -25,9 +26,21 @@ function Profile() {
       city,
       state,
       zipcode,
+      //data,
+    },
+    {
+      headers: {
+        accessToken: localStorage.getItem("accessToken"),
+      },
     })
     .then((response)=>{
-      console.log(response);
+      if(response.data.error) {
+        console.log(response.data.error);
+        alert("User not logged on");
+      }
+      else{
+        alert("SAVED");
+      }
     });
   }
 

@@ -9,7 +9,9 @@ const mongoose = require('mongoose');
 const UserSchema = require('./models/userSchema');
 const profileSchema = require('./models/userInfoSchema');
 const QuoteSchema = require('./models/quoteSchema');
+const {validateToken} = require('./authMiddleware');
 const { restart } = require('nodemon');
+const {sign} = require('jsonwebtoken');
 
 app.use(express.static(path.join(__dirname, '..','frontend','build')));
 app.use(cors());
@@ -51,27 +53,33 @@ app.post('/data/login', async (req,res)=> { //very basic, needs more functionali
   const username = req.body.logUser;
   const password = req.body.logPassword;
   const {logUser, logPassword} = req.body;
+  //const {username, password} = req.body;
   const existing = await UserSchema.findOne({username: logUser});
-  if(!existing) res.status(400).json({error:"User doesn't exist"});
+  if(!existing) res.json({error:"User doesn't exist"});
 
   const dbPassword = existing.password;
   bcrypt.compare(logPassword, dbPassword).then((match)=> {
     if(!match) {
-      console.log("wrong stuff");
-      //res.status(400).json({error: "Wrong user and pass combination"});
-    } else {
-      console.log("LOGGED IN");
+      //console.log("wrong stuff");
+      res.json({error: "Wrong user and pass combination"});
     }
+    const accessToken = sign({username: existing.username, _id: existing._id}, "importantsecret");
+    res.json(accessToken);
+    
   });
 
+})
+
+app.get('/data/login/auth', validateToken, (req,res) => {
+  res.json(req.user);
 })
 
 /*app.get("/data/clientprofile",(req,res)=> {
   
 })*/
 
-app.post("/data/clientprofile", (req,res)=> {
-  const username = req.body.username;
+app.post("/data/clientprofile", validateToken, async (req,res)=> {
+  const username = req.user.username;
   const firstname = req.body.firstName;
   const lastname = req.body.lastName;
   const address1 = req.body.address1;
@@ -91,13 +99,14 @@ app.post("/data/clientprofile", (req,res)=> {
     zipcode: zipcode,
 
   });
-  profileForm.save()
-  .then((result)=> {
-    console.log(result);
-  })
-  .catch((err)=>{
-    console.log(err);
-  })
+  await profileForm.save()
+  res.status(200).json({message: "saved"});
+  // .then((result)=> {
+  //   console.log(result);
+  // })
+  // .catch((err)=>{
+  //   console.log(err);
+  // })
 })
 
 app.post('/data/fuelquote', (req,res)=>{
@@ -131,8 +140,9 @@ app.get('/fuelquote/:username', async(req,res)=>{
   })
   res.send(quote);
 })
-
-mongoose.connect("mongodb+srv://sakibz:sakibzafar123@cluster0.gslom.mongodb.net/FuelApplication?retryWrites=true&w=majority", {useNewUrlParser: true})
+//mongodb+srv://DeadFallen:@cluster0.legd1.mongodb.net/FuelApplication?retryWrites=true&w=majority
+//"mongodb+srv://sakibz:sakibzafar123@cluster0.gslom.mongodb.net/FuelApplication?retryWrites=true&w=majority"
+mongoose.connect("mongodb+srv://DeadFallen:deadfallen@cluster0.legd1.mongodb.net/FuelApplication?retryWrites=true&w=majority", {useNewUrlParser: true})
   .then(() => {
     app.listen(3000, () => {
       console.log('serving port 3000');

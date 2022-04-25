@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./LoginRegistration.css";
+import {useNavigate} from "react-router-dom";
+import { AuthContext } from "./authContext"; 
 import axios from "axios";
 
 function LoginRegistration() {
@@ -7,6 +9,9 @@ function LoginRegistration() {
   const [passwordRegister, setPasswordRegister] = useState("");
   const [logUser, setLogUser] = useState("");
   const [logPassword, setLogPassword] = useState("");
+  const {setAuthState} = useContext(AuthContext);
+
+  let history = useNavigate();
 
   function submitRegistration(e){
     e.preventDefault();
@@ -20,10 +25,16 @@ function LoginRegistration() {
 
   function submitLogin(e){
     e.preventDefault();
-    axios.post('/data/login',{
-      logUser, logPassword})
+    //const data = {username: logUser, password: logPassword};
+    axios.post('/data/login',{logUser, logPassword})
       .then((response)=>{
-        console.log(response);
+        if(response.data.error){
+          alert(response.data.error);
+        } else {
+          localStorage.setItem("accessToken", response.data);
+          setAuthState(true);
+          history("/");
+        }
       });
     }
   return (
