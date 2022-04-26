@@ -37,19 +37,50 @@ function Profile() {
       if(response.data.error) {
         console.log(response.data.error);
         alert("User not logged on");
+      } 
+      else if (response.data.errors){
+        alert(response.data.errors);
       }
-      else{
+      else if (response.data.msg){
+        alert("A profile exists, update instead");
+      } else {
         alert("SAVED");
       }
     });
   }
 
-  function getProfile(e) {
+  function updates(e) {
     e.preventDefault();
-    axios.get("/data/clientprofile").then((response) => {
-      setProfileList(response.data);
+    axios.patch("/data/clientprofile", {
+      firstName,
+      lastName,
+      address1,
+      address2,
+      city,
+      state,
+      zipcode,
+    },
+    {
+      headers: {
+        accessToken: localStorage.getItem("accessToken"),
+      },
     })
+    .then((response)=>{
+      if(response.data.error) {
+        console.log(response.data.error);
+        alert("User not logged on");
+      }
+      else if(response.data.errors) {
+        alert(response.data.errors);
+      } 
+      else if(response.data.errormsg) {
+        alert(response.data.errormsg);
+      } else {
+        alert("UPDATED");
+      }
+    });
   }
+
 
   return (
     <div className="clientProfile">
@@ -191,7 +222,11 @@ function Profile() {
             ></input>
           </div>
           <button type="submit" id="save" onClick={submit}>
-            Save
+            Create
+          </button>
+          
+          <button type="submit" id="update" onClick={updates}>
+            Update Info
           </button>
         </form>
       </div>

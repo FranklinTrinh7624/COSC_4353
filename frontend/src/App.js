@@ -3,6 +3,7 @@ import "./App.css";
 import { Text } from "react-native";
 
 import { AuthContext } from "./authContext";
+//import { AuthContext2 } from "./authContext2";
 import Navigation from "./Navigation";
 import ClientProfile from "./ClientProfile";
 import FuelQuote from "./FuelQuote";
@@ -12,16 +13,25 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import axios from "axios";
 
 export default function App() {
-  const [authState, setAuthState] = useState(false);
+  const [authState, setAuthState] = useState({
+    username: "",
+    status: false,
+  });
+
+  const [user, setUser] = useState("");
+
 
   useEffect(() => {
     axios.get('/data/login/auth', {headers: {
       accessToken: localStorage.getItem("accessToken"),},
     }).then((response) => {
       if(response.data.error) {
-        setAuthState(false);
+        setAuthState({...authState, status: false});
       } else {
-        setAuthState(true);
+        setAuthState({
+          username: response.data.username,
+          status: true,
+        });
       }
     });
     // if(localStorage.getItem('accessToken')) {
@@ -30,42 +40,50 @@ export default function App() {
     
   }, []);
 
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    setAuthState({username:"", status: false});
+  };
+
   return (
     <div className="App">
       <AuthContext.Provider value={{authState, setAuthState}}>
-        <BrowserRouter>
-          {/* <Navigation /> */}
-          <nav>
-            <ul className="nav-links">
-                <Link to="/">
-                  <li>Home</li>
-                </Link>
-                <Link to="/clientprofile">
-                  <li>Client Profile</li>
-                </Link>
-                <Link to="/fuelquote">
-                  <li>Fuel Quote</li>
-                </Link>
-                <Link to="/fuelquotehistory">
-                  <li>Fuel Quote History</li>
-                </Link>
-                {!authState && (
-                  <>
-                    <Link to="/loginregistration">
-                      <li>Login/Registration</li>
-                    </Link>
-                  </>
-                )}
-            </ul>
-          </nav>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/clientprofile" element={<ClientProfile />} />
-            <Route path="/fuelquote" element={<FuelQuote />} />
-            <Route path="/loginregistration" element={<LoginRegistration />} />
-            <Route path="/fuelquotehistory" element={<FuelQuoteHistory />} />
-          </Routes>
-        </BrowserRouter>
+          <BrowserRouter>
+            {/* <Navigation /> */}
+            <nav>
+              <div className="nav-links">
+                  <Link to="/">
+                    <li>Home</li>
+                  </Link>
+                  <Link to="/clientprofile">
+                    <li>Client Profile</li>
+                  </Link>
+                  <Link to="/fuelquote">
+                    <li>Fuel Quote</li>
+                  </Link>
+                  <Link to="/fuelquotehistory">
+                    <li>Fuel Quote History</li>
+                  </Link>
+                  {!authState.status ? (
+                    <>
+                      <Link to="/loginregistration">
+                        <li>Login/Registration</li>
+                      </Link>
+                    </>
+                  ) : (
+                    <button onClick={logout}>Logout</button>
+                  )}
+                  <h1>{authState.username}</h1>
+              </div>
+            </nav>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/clientprofile" element={<ClientProfile />} />
+              <Route path="/fuelquote" element={<FuelQuote />} />
+              <Route path="/loginregistration" element={<LoginRegistration />} />
+              <Route path="/fuelquotehistory" element={<FuelQuoteHistory />} />
+            </Routes>
+          </BrowserRouter>
       </AuthContext.Provider>
     </div>
   );

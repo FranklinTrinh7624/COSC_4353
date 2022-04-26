@@ -6,9 +6,17 @@ function FuelQuoteHistory() {
   const [history, setHistory] = useState([]);
   
   useMemo(()=>{
-    axios.get('/fuelquote/franklin123').then((response)=>{
-      setHistory(response.data)
-      console.log(response)
+    axios.get('/data/fuelquote', {
+      headers: {
+        accessToken: localStorage.getItem("accessToken"),
+      },
+    }).then((response)=>{
+      if(response.data.error) {
+        alert("error here history");
+      } else {
+        setHistory(response.data)
+        console.log(response)
+      }
     })
   },[])
   //change to schema stuff
