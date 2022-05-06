@@ -32,6 +32,12 @@ app.post('/data/registration', (req,res)=> {
   const username = req.body.userRegister;
   const password = req.body.passwordRegister;
   const {userRegister, passwordRegister} = req.body;
+  if(userRegister.length < 8) {
+    return res.json({error1: "User should be 8 characters minimum"});
+  } 
+  else if(passwordRegister.length < 8) {
+    return res.json({error2: "Password should be 8 characters minimum"});
+  }
   let hashpass;
   hashpass = bcrypt.hash(passwordRegister,10).then((hash) => {
     const freshAcc = new UserSchema({
@@ -46,7 +52,7 @@ app.post('/data/registration', (req,res)=> {
       console.log(err);
     })
   }) 
-
+  res.json({msg: "success"});
 })
 
 app.post('/data/login', async (req,res)=> { //very basic, needs more functionality

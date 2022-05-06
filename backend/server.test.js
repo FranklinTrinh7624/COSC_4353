@@ -11,6 +11,24 @@ describe("test /register", ()=> {
             expect (response.statusCode).toBe(201)
             
         })
+    }),
+    describe("register with invalid user", () => {
+        it("should response with 400", async () => {
+            const response = await request(server2).post("/data/login/register").send({
+                userName: "fake",
+                passWord: "password"
+            })
+            expect (response.statusCode).toBe(400)
+        })
+    }),
+    describe("register with invalid password", () => {
+        it("should respond with 400", async () => {
+            const response = await request(server2).post("/data/login/register").send({
+                userName: "fakeuser",
+                passWord: "pass"
+            })
+            expect (response.statusCode).toBe(400)
+        })
     })
 })
 
@@ -44,7 +62,7 @@ describe("testing /profile", ()=> {
             addrr1:"1111 prof st",
             addrr2:"2222 prof st",
             cityy:"Houston",
-            statee:"TX",
+            statee:"Texas",
             zipcodee:"77778"
         })
         expect(response.statusCode).toBe(200)
@@ -59,7 +77,7 @@ describe("testing /profile", ()=> {
                 addrr1:"1111 prof st",
                 addrr2:"2222 prof st",
                 cityy:"Houston",
-                statee:"TX",
+                statee:"Texas",
                 zipcodee:"77778"
             })
             expect(response.statusCode).toBe(400)
@@ -74,7 +92,7 @@ describe("testing /profile", ()=> {
                 addrr1:"1111 prof st",
                 addrr2:"2222 prof st",
                 cityy:"Houston",
-                statee:"TX",
+                statee:"Texas",
                 zipcodee:"77778"
             })
             expect(response.statusCode).toBe(400)
@@ -89,7 +107,7 @@ describe("testing /profile", ()=> {
                 addrr1:"1111 prof st 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
                 addrr2:"2222 prof st",
                 cityy:"Houston",
-                statee:"TX",
+                statee:"Texas",
                 zipcodee:"77778"
             })
             expect(response.statusCode).toBe(400)
@@ -104,7 +122,7 @@ describe("testing /profile", ()=> {
                 addrr1:"1111 prof st",
                 addrr2:"2222 prof st 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
                 cityy:"Houston",
-                statee:"TX",
+                statee:"Texas",
                 zipcodee:"77778"
             })
             expect(response.statusCode).toBe(400)
@@ -119,7 +137,7 @@ describe("testing /profile", ()=> {
                 addrr1:"1111 prof st",
                 addrr2:"2222 prof st",
                 cityy:"HoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHouston",
-                statee:"TX",
+                statee:"Texas",
                 zipcodee:"77778"
             })
             expect(response.statusCode).toBe(400)
@@ -134,7 +152,7 @@ describe("testing /profile", ()=> {
                 addrr1:"1111 prof st",
                 addrr2:"2222 prof st",
                 cityy:"Houston",
-                statee:"TX",
+                statee:"Texas",
                 zipcodee:"77778-123456"
             })
             expect(response.statusCode).toBe(400)
@@ -146,11 +164,11 @@ describe("testing /fuelquote", ()=> {
     it("should respond with 201", async()=> {
         const response = await request(server2).post("/data/fuelquote/fuelquoteform").send({
             userName: "fakeuser",
-            galloN: 15,
+            galloN: 500,
             delvAddresS: "2222 delivery st",
-            datE:"2022-07-19",
-            pricePerGalloN:11,
-            totalPricE:165
+            datE:"2022-08-20",
+            //pricePerGalloN:11,
+            //totalPricE:165
         })
         expect(response.statusCode).toBe(201)
     })

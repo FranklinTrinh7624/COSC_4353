@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">86.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/15</span>
+                <span class='fraction'>26/30</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">57.14% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>4/7</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">86.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/15</span>
+                <span class='fraction'>26/30</span>
             </div>
         
             
@@ -111,7 +111,32 @@
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -136,6 +161,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -161,6 +209,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">const {validationResult, check} = require("express-validator");
 const QuoteSchema = require('../models/quoteSchema');
+const profileSchema = require('../models/userInfoSchema')
 &nbsp;
 //https://www.freecodecamp.org/news/how-to-make-input-validation-simple-and-clean-in-your-express-js-app-ea9b5ff5a8a7/
 &nbsp;
@@ -177,7 +226,7 @@ exports.validate = (method) =&gt; {
 }
 &nbsp;
 &nbsp;
-const fuelQuote = (req,res) =&gt; {
+const fuelQuote = async (req,res) =&gt; {
     // const errors = validationResult(req);
     // if(!errors.isEmpty()) {
     //     res.status(422).json({errors: errors.array() });
@@ -185,18 +234,41 @@ const fuelQuote = (req,res) =&gt; {
     // }
 &nbsp;
     const {userName, galloN, delvAddresS, datE, pricePerGalloN, totalPricE} = req.body;
+    let multiplicationFactor, margin, suggestedPriceLol, totalAmountDue;
+&nbsp;
+    const exists = await profileSchema.findOne({username: userName});
+    multiplicationFactor = .1
+    if(exists.state === "Texas"){
+    multiplicationFactor += .02;
+    }
+    else <span class="missing-if-branch" title="else path not taken" >E</span>{
+<span class="cstat-no" title="statement not covered" >    multiplicationFactor += .04;</span>
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (galloN &gt; 1000){
+<span class="cstat-no" title="statement not covered" >    multiplicationFactor += .02;</span>
+    }
+    else {
+    multiplicationFactor += .03;
+    }
+    const quoteExists = await QuoteSchema.findOne({username: userName});
+    <span class="missing-if-branch" title="else path not taken" >E</span>if(quoteExists/*.countDocuments()!=0*/){
+    multiplicationFactor -= .01;
+    }
+    margin = multiplicationFactor *1.5
+    suggestedPriceLol = 1.5 + margin
+    totalAmountDue = galloN * suggestedPriceLol
     try {
         const newFuelQuote = new QuoteSchema({
             username: userName,
             date: datE,
             gallons: galloN,
             address: delvAddresS,
-            pricePerGallon: pricePerGalloN,
-            totalPrice: totalPricE
+            pricePerGallon: suggestedPriceLol,
+            totalPrice: Math.round(100*totalAmountDue)/100
         });
-        newFuelQuote.save();
+        await newFuelQuote.save();
     } catch(err) {
-<span class="cstat-no" title="statement not covered" >        res.status(422).json({errors: errors.array() });</span>
+<span class="cstat-no" title="statement not covered" >        res.status(500).json({errors: errors.array() });</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
     }
     //const checkFuel = {iD, galloN, delvAddresS, datE, pricePerGalloN, totalPricE};
@@ -214,7 +286,7 @@ exports.fuelQuote = fuelQuote;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sat Apr 02 2022 10:40:00 GMT-0500 (Central Daylight Time)
+                at Fri May 06 2022 08:03:43 GMT-0500 (Central Daylight Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>

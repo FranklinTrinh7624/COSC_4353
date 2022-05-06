@@ -19,6 +19,13 @@ function LoginRegistration() {
       userRegister, passwordRegister,})
       .then((response)=>{
         console.log(response);
+        if(response.data.error1){
+          alert(response.data.error1);
+        } else if (response.data.error2){
+          alert(response.data.error2);
+        } else {
+          alert("registration successful");
+        }
       });
 
     }
@@ -56,13 +63,13 @@ function LoginRegistration() {
         <form className="register">
           <label> Registration </label>
           <div className="regiUser">
-            <input type="text" id="user" name="userReg"placeholder="Create Username" 
-            onChange={(e)=> {setUserRegister(e.target.value)}} required/>
+            <input type="text" id="user" name="userReg"placeholder="Create Username" minLength={8} pattern = ".{8,}" required title="8 characters minimum"
+            onChange={(e)=> {setUserRegister(e.target.value)}} />
           </div>
 
           <div className="regiPass">
-            <input type="password" id="pw" name="passReg"placeholder="Create Password" 
-            onChange={(e)=> {setPasswordRegister(e.target.value)}} required/>
+            <input type="password" id="pw" name="passReg"placeholder="Create Password" minLength={8} pattern = ".{8,}" required title="8 characters minimum"
+            onChange={(e)=> {setPasswordRegister(e.target.value)}} />
           </div>
           <button className="submit" type="submit" onClick={submitRegistration}> Register </button>
         </form>

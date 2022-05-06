@@ -82,7 +82,7 @@ app.use("/data/fuelquote", fuelRoute);
 // app.listen(3000,()=>{
 //   console.log('serving port 3000');
 // });
-mongoose.connect("mongodb+srv://DeadFallen:<password></password>@cluster0.legd1.mongodb.net/FuelApplication?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://DeadFallen:@cluster0.legd1.mongodb.net/FuelApplication?retryWrites=true&w=majority")
 .then(()=> {
     let server = app.listen(3001);
     module.exports = server;

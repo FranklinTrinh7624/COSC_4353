@@ -127,6 +127,12 @@ const registration = async (req,res) => {
     }
     
     const {userName, passWord} = req.body;
+    if(userName.length < 8) {
+        return res.status(400).json({errors: errors.array()});
+      } 
+    else if(passWord.length < 8) {
+        return res.status(400).json({errors:  errors.array()});
+      }
     let hashpass;
     try {
         hashpass = await bcrypt.hash(passWord,10);

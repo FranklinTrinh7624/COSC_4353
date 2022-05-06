@@ -1,5 +1,6 @@
 const {validationResult, check} = require("express-validator");
 const QuoteSchema = require('../models/quoteSchema');
+const profileSchema = require('../models/userInfoSchema')
 
 //https://www.freecodecamp.org/news/how-to-make-input-validation-simple-and-clean-in-your-express-js-app-ea9b5ff5a8a7/
 
@@ -16,7 +17,7 @@ exports.validate = (method) => {
 }
 
 
-const fuelQuote = (req,res) => {
+const fuelQuote = async (req,res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         res.status(422).json({errors: errors.array() });
@@ -24,18 +25,41 @@ const fuelQuote = (req,res) => {
     }
 
     const {userName, galloN, delvAddresS, datE, pricePerGalloN, totalPricE} = req.body;
+    let multiplicationFactor, margin, suggestedPriceLol, totalAmountDue;
+
+    const exists = await profileSchema.findOne({username: userName});
+    multiplicationFactor = .1
+    if(exists.state === "Texas"){
+    multiplicationFactor += .02;
+    }
+    else {
+    multiplicationFactor += .04;
+    }
+    if (galloN > 1000){
+    multiplicationFactor += .02;
+    }
+    else {
+    multiplicationFactor += .03;
+    }
+    const quoteExists = await QuoteSchema.findOne({username: userName});
+    if(quoteExists/*.countDocuments()!=0*/){
+    multiplicationFactor -= .01;
+    }
+    margin = multiplicationFactor *1.5
+    suggestedPriceLol = 1.5 + margin
+    totalAmountDue = galloN * suggestedPriceLol
     try {
         const newFuelQuote = new QuoteSchema({
             username: userName,
             date: datE,
             gallons: galloN,
             address: delvAddresS,
-            pricePerGallon: pricePerGalloN,
-            totalPrice: totalPricE
+            pricePerGallon: suggestedPriceLol,
+            totalPrice: Math.round(100*totalAmountDue)/100
         });
-        newFuelQuote.save();
+        await newFuelQuote.save();
     } catch(err) {
-        res.status(422).json({errors: errors.array() });
+        res.status(500).json({errors: errors.array() });
         return;
     }
     //const checkFuel = {iD, galloN, delvAddresS, datE, pricePerGalloN, totalPricE};
